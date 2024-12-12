@@ -1,27 +1,24 @@
 package com.example.kotlin_classes.classes.sealed_class
 
-/**
- * Zahlungsmethoden für einen Onlineshop
- */
-sealed class PaymentMethod
+sealed class BookStatus
 
-data class CreditCard(val cardNumber: String, val expiryDate: String): PaymentMethod()
-data class Paypal(val email:String): PaymentMethod()
-object CashOnDelivery: PaymentMethod()
+data class CheckedOut(val dueDate: String): BookStatus()
+data class Reserved(val name:String): BookStatus()
+object Available: BookStatus()
 
-fun processPayment(paymentMethod: PaymentMethod){
-    when (paymentMethod) {
-        is CreditCard -> println("Zahlung mit Kreditkarte: Karte endet auf ${paymentMethod.cardNumber.takeLast(4)}.\n")
-        is Paypal -> println("Zahlung mit Paypal mit der Mail ${paymentMethod.email}.\n")
-        CashOnDelivery -> println("Zahlung per Name.")
+fun processStatus(status: BookStatus){
+    when (status) {
+        is CheckedOut -> println("Book is checked out until: ${status.dueDate}.\n")
+        is Reserved -> println("Book is reserved by ${status.name}.\n")
+        Available -> println("Book is available")
     }
 }
 fun main() {
-    val creditCardPayment = CreditCard("1234567812345678", "12/25")
-    val paypalPayment = Paypal("customer@example.com")
-    val cashPayment = CashOnDelivery
+    val statusCheckedOut = CheckedOut("19/12/2024")
+    val statusReserved = Reserved("customer@example.com")
+    val statusAvailable = Available
 
-    processPayment(creditCardPayment)
-    processPayment(paypalPayment)
-    processPayment(cashPayment)
+    processStatus(statusCheckedOut)
+    processStatus(statusReserved)
+    processStatus(statusAvailable)
 }
